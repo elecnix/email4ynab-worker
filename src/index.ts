@@ -1,24 +1,12 @@
 import { Inngest } from "inngest";
+import { extractEmailCode, parseEmailHeaders } from './email-utils'; 
 
 /**
- * Extracts the unique email code from a recipient email address
- * Expected format: XXXXXXXX@yourdomain.com
- * 
- * @param emailAddress The recipient email address
- * @returns The extracted code or null if not found
+ * Welcome to Cloudflare Workers! This is your first worker.
+ *
+ * You can use ES2017+ features, today!
  */
-export function extractEmailCode(emailAddress: string): string | null {
-	if (!emailAddress) return null;
-	
-	// Check for XXXXXXXX@domain.com format
-	const directCode = emailAddress.match(/^([a-zA-Z0-9]{8})@/);
-	if (directCode && directCode[1]) {
-	  return directCode[1].toLowerCase();
-	}
-	
-	return null;
-  }
-  
+
 /**
  * Reads a ReadableStream and converts it to a string
  */
@@ -40,34 +28,6 @@ async function streamToString(stream: ReadableStream<Uint8Array>): Promise<strin
 }
 
 /**
- * Parse raw email headers from a string
- */
-function parseEmailHeaders(rawEmail: string): { headers: Record<string, string>; from: string; to: string } {
-    const headers: Record<string, string> = {};
-    const lines = rawEmail.split('\n');
-    let from = '';
-    let to = '';
-    
-    // Extract headers from the raw email
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) break; // Empty line marks the end of headers
-        
-        const match = line.match(/^([^:]+):\s*(.*)$/);
-        if (match) {
-            const [, name, value] = match;
-            const headerName = name.toLowerCase();
-            headers[headerName] = value;
-            
-            if (headerName === 'from') from = value;
-            if (headerName === 'to') to = value;
-        }
-    }
-    
-    return { headers, from, to };
-}
-
-/**
  * Process an email and send it to Inngest
  */
 async function processEmail(
@@ -85,8 +45,9 @@ async function processEmail(
     
     // Forward the email with the extracted code
     const inngest = new Inngest({ id: "email4ynab-worker", eventKey });
+    const eventName = "worker/email.received";
     await inngest.send({
-        name: "worker/email.received",
+        name: eventName,
         data: {
             from,
             to,
@@ -97,7 +58,7 @@ async function processEmail(
         },
     });
     
-    console.log(`Processed email with code: ${emailCode}`);
+    console.log(`Sent ${eventName} event with code: ${emailCode}`);
     return { success: true, emailCode };
 }
 
