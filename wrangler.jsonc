@@ -6,7 +6,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "email4ynab-worker",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-04-14",
+	"compatibility_date": "2025-03-10",
 	"observability": {
 		"enabled": true
 	}
