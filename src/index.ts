@@ -80,7 +80,7 @@ async function processEmail(
     // Extract email code from the recipient address
     const emailCode = extractEmailCode(to);
     if (!emailCode) {
-        return { success: false, emailCode: null, error: 'No valid email code found in recipient address' };
+        return { success: false, emailCode: null, error: `No valid email code found in recipient address: ${to}` };
     }
     
     // Forward the email with the extracted code

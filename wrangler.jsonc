@@ -49,4 +49,22 @@
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+
+	"secrets_store_secrets": [
+		{
+			"binding": "INNGEST_SIGNING_KEY",
+			"store_id": "e8920c5985ce4098bfbbcbbe1797a323",
+			"secret_name": "INNGEST_SIGNING_KEY"
+		},
+		{
+			"binding": "INNGEST_SIGNING_KEY_FALLBACK",
+			"store_id": "e8920c5985ce4098bfbbcbbe1797a323",
+			"secret_name": "INNGEST_SIGNING_KEY_FALLBACK"
+		},
+		{
+			"binding": "INNGEST_EVENT_KEY",
+			"store_id": "e8920c5985ce4098bfbbcbbe1797a323",
+			"secret_name": "INNGEST_EVENT_KEY"
+		}
+	]
 }
