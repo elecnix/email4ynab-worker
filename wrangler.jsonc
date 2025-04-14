@@ -9,7 +9,12 @@
 	"compatibility_date": "2025-03-10",
 	"observability": {
 		"enabled": true
-	}
+	},
+	// Fix: The package "node:async_hooks" wasn't found on the file system but is built into node.
+	// https://developers.cloudflare.com/workers/runtime-apis/nodejs/
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
