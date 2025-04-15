@@ -86,7 +86,7 @@ const worker = {
         
         // Convert Headers to Record<string, string>
         const headerRecord: Record<string, string> = {};
-        for (const [key, value] of Object.entries(message.headers)) {
+        for (const [key, value] of message.headers) {
             headerRecord[key] = value;
         }
         

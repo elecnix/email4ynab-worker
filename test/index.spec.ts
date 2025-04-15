@@ -121,15 +121,15 @@ describe('Worker Handlers', () => {
 	};
 
 	// Mock email message
-	const createMockEmailMessage = (to: string) => {
+	const createMockEmailMessage = (to: string, subject: string = 'Test Email') => {
 		const rawContent = 'From: sender@example.com\r\n' +
 			`To: ${to}\r\n` +
-			'Subject: Test Email\r\n\r\n' +
+			`Subject: ${subject}\r\n\r\n` +
 			'This is a test email body';
 		const encodedContent = new TextEncoder().encode(rawContent);
 
 		const mockHeaders = new Headers();
-		mockHeaders.set('subject', 'Test Email');
+		mockHeaders.set('subject', subject);
 
 		return {
 			from: 'sender@example.com',
@@ -154,12 +154,16 @@ describe('Worker Handlers', () => {
 
 	describe('email handler', () => {
 		it('should process valid emails', async () => {
-			const mockMessage = createMockEmailMessage('fw+12345678@email4ynab.com');
+			const testSubject = 'Special Subject Line';
+			const mockMessage = createMockEmailMessage('fw+12345678@email4ynab.com', testSubject);
 
 			await worker.email(mockMessage, mockEnv);
 
 			// Verify the email was not rejected
 			expect(mockMessage.setReject).not.toHaveBeenCalled();
+
+			// Assert subject is extracted from headers
+			expect(mockMessage.headers.get('subject')).toBe(testSubject);
 		});
 
 		it('should reject invalid emails', async () => {
