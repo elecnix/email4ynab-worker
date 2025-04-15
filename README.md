@@ -20,7 +20,13 @@ This worker processes incoming emails in `.eml` format and extracts relevant inf
     npm run dev
     ```
 
-3.  **Post an email:**
+3.  **Run tests:**
+    To run all unit and integration tests:
+    ```bash
+    npm run test
+    ```
+
+4.  **Post an email:**
     To test the worker, you can send an email file (`.eml`) using `curl`. Make sure the development server is running. Replace `path/to/your/email.eml` with the actual path to your email file.
 
     ```bash
@@ -37,3 +43,26 @@ This worker processes incoming emails in `.eml` format and extracts relevant inf
 ```bash
 npm run deploy
 ```
+
+## CI/CD Setup
+
+This project uses GitHub Actions for Continuous Integration and Deployment:
+
+- **CI Pipeline**: Automatically runs tests and linting on pull requests and pushes to main
+- **CD Pipeline**: Automatically deploys to Cloudflare Workers when changes are pushed to main
+
+### Required Secrets
+
+To enable the CI/CD pipelines, add these secrets to your GitHub repository:
+
+- `CF_API_TOKEN`: Cloudflare API token with Workers permissions
+- `CF_ACCOUNT_ID`: Your Cloudflare account ID
+
+### Secrets Store
+
+```bash
+npx wrangler secrets-store secret create 00000000000000000000000000000000 --name INNGEST_SIGNING_KEY --scopes workers --remote
+
+npx wrangler types --include-env=false
+```
+

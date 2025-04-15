@@ -12,13 +12,13 @@ export function extractEmailCode(email: string): string | null {
 	if (emailParts.length !== 2) return null;
 
 	const localPart = emailParts[0];
-	const domain = emailParts[1];
 
-	// Basic validation: 8 alphanumeric characters
-	const codeRegex = /^[a-zA-Z0-9]{8}$/;
-	if (!codeRegex.test(localPart)) return null;
+	// Must start with 'fw+' followed by 8-32 alphanumeric characters
+	const codeRegex = /^fw\+([a-zA-Z0-9]{8,32})$/;
+	const match = localPart.match(codeRegex);
+	if (!match) return null;
 
-	return localPart.toLowerCase();
+	return match[1].toLowerCase();
 }
 
 
