@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: Generate Types
-        run: npm run generate-types
+        run: npm run cf-typegen
 
       - name: Run tests
         run: npm test
